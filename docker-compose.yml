@@ -1,0 +1,5 @@
+version: "3.9"
+services:
+  corporate_food:
+    container_name: corporate_food
+    

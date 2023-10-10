@@ -1,0 +1,4 @@
+env
+*tz.docx
+**/__pycache__/
+text
