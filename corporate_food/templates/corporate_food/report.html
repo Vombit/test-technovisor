@@ -1,0 +1,15 @@
+{% extends 'corporate_food/base.html' %}
+{% load static %}{% load mathfilters %}
+
+{% block content %}
+
+    {% for items in report %}
+        {{ items.name }} | 
+        {{ items.price }} | 
+        {{ items.count }} | 
+        {{ items.count|mul:items.price }}<br>
+    {% endfor %}
+
+    <br><br>
+    {{ total }}
+{% endblock %}

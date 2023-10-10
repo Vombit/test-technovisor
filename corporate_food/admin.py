@@ -20,8 +20,10 @@ class Dish(admin.ModelAdmin):
 
 @admin.register(Order)
 class Order(admin.ModelAdmin):
-    list_display = ('staffer', 'date_time')
+    list_display = ('staffer', 'date')
     search_fields = ('staffer__name',)
+    
+    list_filter = ('staffer__name',)
 
 
 

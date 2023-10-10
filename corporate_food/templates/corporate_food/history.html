@@ -1,0 +1,12 @@
+{% extends 'corporate_food/base.html' %}
+{% load static %}
+
+{% block content %}
+    {% for order, items in orders.items %}
+        {{ order }}
+        {% for item in items %}
+            {{ item.name }}<br>
+            {{ item.price }}<br>
+        {% endfor %}
+    {% endfor %}
+{% endblock %}

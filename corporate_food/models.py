@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils import timezone
 
 
 class Staffer(models.Model):
@@ -40,7 +40,7 @@ class Dish(models.Model):
 
 class Order(models.Model):
     staffer = models.ForeignKey(Staffer, on_delete=models.CASCADE)
-    date_time = models.DateTimeField(auto_now=True)
+    date = models.DateField(default=timezone.now)
     
     class Meta:
         verbose_name = 'Заказ'
@@ -62,3 +62,4 @@ class Order_Dish(models.Model):
 
     def __str__(self):
         return f'{self.order.staffer.name} - {self.order.date}'
+    

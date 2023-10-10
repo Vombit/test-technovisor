@@ -1,0 +1,33 @@
+{% extends 'corporate_food/base.html' %}
+{% load static %}
+
+{% block content %}
+    <h1>order</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div>
+            <button type="submit">Оформить заказ</button>
+        </div>
+    </form>
+</div>
+<div>
+    <div>
+        <h2>
+            Меню:
+        </h2>
+    </div>
+    <div>
+        {% for dish in dishes %}
+            <div style="width: 18rem;">
+                <div>
+                    <h5>{{ dish.name}} </h5>
+                    <p>{{ dish.compound }}</p>
+                    <h5>{{ dish.price }}₽</h5>
+                </div>
+            </div>
+        {% endfor %}
+
+
+{% endblock %}

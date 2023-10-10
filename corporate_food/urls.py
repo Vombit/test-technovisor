@@ -9,7 +9,7 @@ app_name = 'corporate_food'
 urlpatterns = [
     path('', view=views.index, name='index'),
     path('order/', view=views.order, name='order'),
-    path('history/', view=views.history, name='history'),
+    path('history/<user_id>', view=views.history, name='history'),
     path('report/<date>', view=views.report, name='report'),
     
     
