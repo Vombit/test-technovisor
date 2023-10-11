@@ -2,14 +2,34 @@
 {% load static %}{% load mathfilters %}
 
 {% block content %}
+    <div class="container">
+        <h1 class="text-center">Отчет о продуктах</h1>
+        <hr>
 
-    {% for items in report %}
-        {{ items.name }} | 
-        {{ items.price }} | 
-        {{ items.count }} | 
-        {{ items.count|mul:items.price }}<br>
-    {% endfor %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Наименование</th>
+                    <th>Цена</th>
+                    <th>Количество</th>
+                    <th>Итого</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for items in report %}
+                    <tr>
+                        <td>{{ items.name }}</td>
+                        <td>{{ items.price }}</td>
+                        <td>{{ items.count }}</td>
+                        <td>{{ items.count|mul:items.price }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
-    <br><br>
-    {{ total }}
+        <br><br>
+        <div class="text-center">
+            <strong>Общая сумма: {{ total }}</strong>
+        </div>
+    </div>
 {% endblock %}

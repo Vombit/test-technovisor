@@ -2,11 +2,34 @@
 {% load static %}
 
 {% block content %}
-    {% for order, items in orders.items %}
-        {{ order }}
-        {% for item in items %}
-            {{ item.name }}<br>
-            {{ item.price }}<br>
+    <div class="container">
+        <h1 class="text-center">Ваши заказы</h1>
+        <hr>
+
+        {% for order, items in orders.items %}
+            <div class="card mb-3">
+                <div class="card-header">
+                    Заказ {{ order }}
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Наименование</th>
+                                <th>Цена</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in items %}
+                                <tr>
+                                    <td>{{ item.name }}</td>
+                                    <td>{{ item.price }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         {% endfor %}
-    {% endfor %}
+    </div>
 {% endblock %}
