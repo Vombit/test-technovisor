@@ -4,6 +4,7 @@
 {% block content %}
     <div class="container">
         <h1 class="text-center mt-4 mb-5">Заказ</h1>
+        <h1 class="text-center mt-4 mb-5">Заказ</h1>
         <div class="row justify-content-center">
             <div class="col-md-7 mb-3">
                 <form method="post">
@@ -17,9 +18,23 @@
                             {{ form.date.label_tag }}
                             {{ form.date }}
                         </div>
+                    <div class="row">
+                        <div class="form-group col-sm mt-2">
+                            {{ form.staffer.label_tag }}
+                            {{ form.staffer }}
+                        </div>
+                        <div class="form-group col-sm mt-2">
+                            {{ form.date.label_tag }}
+                            {{ form.date }}
+                        </div>
                     </div>
                     <div class="form-group mt-4">
+                    <div class="form-group mt-4">
                         {{ form.dishes.label_tag }}
+                        <div class="card-columns row row-cols-2">
+                            
+                            {% for dish in form.dishes.field.queryset %}
+                                <div class="card mt-3 card-checkbox" onclick="toggleCardSelection(this)">
                         <div class="card-columns row row-cols-2">
                             
                             {% for dish in form.dishes.field.queryset %}
@@ -33,6 +48,7 @@
                                             <p class="card-text small">Калорийность: {{ dish.calories }} ккал.</p>
                                         </label>
                                     </div>
+                                </div>
                                 </div>
                             {% endfor %}
                         </div>
@@ -51,6 +67,29 @@
             </div>
         </div>
     </div>
+
+
+    <style>
+        .card-checkbox input[type="checkbox"] {
+            display: none;
+        }
+        .card-selected {
+            border: 2px solid #007bff;
+        }
+    </style>
+    <script>
+        function toggleCardSelection(card) {
+            const checkbox = card.querySelector('input[type="checkbox"]');
+            
+            if (checkbox.checked) {
+                card.classList.remove("card-selected");
+                checkbox.checked = false;
+            } else {
+                card.classList.add("card-selected");
+                checkbox.checked = true;
+            }
+        }
+        </script>
 
 
     <style>

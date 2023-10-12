@@ -11,6 +11,15 @@ class DishChoiceWidget(forms.CheckboxSelectMultiple):
         return super().create_option(name, value, label, selected, index, subindex, attrs)
 
 
+
+
+class DishChoiceWidget(forms.CheckboxSelectMultiple):
+    def create_option(self, name, value, label, selected, index, subindex=None, attrs=None):
+        if value is None:
+            option_value = ''
+        return super().create_option(name, value, label, selected, index, subindex, attrs)
+
+
 class OrderForm(forms.Form):
     staffer = forms.ModelChoiceField(
         queryset=Staffer.objects.all(),
