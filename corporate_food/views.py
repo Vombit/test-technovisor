@@ -6,8 +6,16 @@ from random import randint
 from django.shortcuts import get_object_or_404
 
 def index(request):
+    dates = Order.objects.values_list('date', flat=True).distinct()
+    staffers = Staffer.objects.all()
     
-    return render(request, 'corporate_food/base.html')
+    context = {
+        'dates': dates,
+        'staffers': staffers,
+    }
+    
+    return render(request, 'corporate_food/base.html', context)
+    
 
 
 def history(request, user_id):
@@ -33,24 +41,28 @@ def history(request, user_id):
 
 
 def order(request):
+    form = OrderForm()
+    
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
             staffer = form.cleaned_data['staffer']
             date = form.cleaned_data['date']
             dishes = form.cleaned_data['dishes']
-
+            
+            selected_dish_ids = form.cleaned_data['dishes']
+            selected_dishes = Dish.objects.filter(pk__in=selected_dish_ids)
+            
             order = Order.objects.create(staffer=staffer, date=date)
 
-            for dish in dishes:
+            for dish in selected_dishes:
                 Order_Dish.objects.create(order=order, dish=dish)
 
-            return redirect('success_page')
+            return redirect('')
 
     else:
-        form = OrderForm()
-
-    return render(request, 'corporate_food/order.html', {'form': form})
+        dishes = Dish.objects.all()
+        return render(request, 'corporate_food/order.html', {'form': form, 'dishes': dishes})
 
 
 def report(request, date):
