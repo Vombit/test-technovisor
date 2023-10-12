@@ -1,13 +1,19 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, JsonResponse
 from .models import *
 from .forms import *
-from random import randint
-from django.shortcuts import get_object_or_404
+import random
 
 def index(request):
+    dates = Order.objects.values_list('date', flat=True).distinct()
+    staffers = Staffer.objects.all()
     
-    return render(request, 'corporate_food/base.html')
+    context = {
+        'dates': dates,
+        'staffers': staffers,
+    }
+    
+    return render(request, 'corporate_food/base.html', context)
+    
 
 
 def history(request, user_id):
@@ -33,24 +39,49 @@ def history(request, user_id):
 
 
 def order(request):
+    form = OrderForm()
+    
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
+            luck_me = form.cleaned_data.get('luck_me', False)
+            
             staffer = form.cleaned_data['staffer']
             date = form.cleaned_data['date']
             dishes = form.cleaned_data['dishes']
-
+            
+            selected_dish_ids = form.cleaned_data['dishes']
+            selected_dishes = Dish.objects.filter(pk__in=selected_dish_ids)
+            
             order = Order.objects.create(staffer=staffer, date=date)
 
-            for dish in dishes:
+            for dish in selected_dishes:
                 Order_Dish.objects.create(order=order, dish=dish)
+                
+                
+            total_sum = sum(dish.price for dish in selected_dishes)
+                
+            if luck_me:
+                random_dish = random.choice(Dish.objects.all())
+                Order_Dish.objects.create(order=order, dish=random_dish)
+                
+                selected_dishes = list(selected_dishes)
+                selected_dishes.append(random_dish)
+                total_sum += random_dish.price
+                
+                
+                
 
-            return redirect('success_page')
+            context = {
+                'dishes': selected_dishes,
+                'date': date,
+                'total': total_sum,
+            }
+            return render(request, 'corporate_food/order_details.html', context)
 
     else:
-        form = OrderForm()
-
-    return render(request, 'corporate_food/order.html', {'form': form})
+        dishes = Dish.objects.all()
+        return render(request, 'corporate_food/order.html', {'form': form, 'dishes': dishes})
 
 
 def report(request, date):

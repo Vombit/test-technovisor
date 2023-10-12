@@ -3,35 +3,75 @@
 
 {% block content %}
     <div class="container">
+        <h1 class="text-center mt-4 mb-5">Заказ</h1>
         <div class="row justify-content-center">
-            <div class="col-md-6">
-                <h1 class="text-center">Заказ</h1>
+            <div class="col-md-7 mb-3">
                 <form method="post">
                     {% csrf_token %}
-                    {{ form.non_field_errors }}
-                    <div class="form-group">
-                        {{ form.staffer.label_tag }}
-                        {{ form.staffer }}
+                    <div class="row">
+                        <div class="form-group col-sm mt-2">
+                            {{ form.staffer.label_tag }}
+                            {{ form.staffer }}
+                        </div>
+                        <div class="form-group col-sm mt-2">
+                            {{ form.date.label_tag }}
+                            {{ form.date }}
+                        </div>
                     </div>
-                    <div class="form-group">
-                        {{ form.date.label_tag }}
-                        {{ form.date }}
-                    </div>
-                    <div class="form-group">
+                    <div class="form-group mt-4">
                         {{ form.dishes.label_tag }}
-                        <div class="card-columns">
-                            {% for dish in form.dishes %}
-                                <label class="card" style="cursor: pointer;">
+                        <div class="card-columns row row-cols-2">
+                            
+                            {% for dish in form.dishes.field.queryset %}
+                                <div class="card mt-3 card-checkbox" onclick="toggleCardSelection(this)">
                                     <div class="card-body">
-                                        {{ dish }}
+                                        <label class="form-check-label">
+                                            <input type="checkbox" name="{{ form.dishes.name }}" value="{{ dish.id }}" id="id_{{ form.dishes.name }}_{{ forloop.counter }}" style="display: none">
+                                            <h5 class="card-title">{{ dish.name }}</h5>
+                                            <p class="card-text small">{{ dish.composition }}</p>
+                                            <p class="card-text small">Цена: {{ dish.price }} руб.</p>
+                                            <p class="card-text small">Калорийность: {{ dish.calories }} ккал.</p>
+                                        </label>
                                     </div>
-                                </label>
+                                </div>
                             {% endfor %}
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block ">Отправить заказ</button>
+
+                    <div class="form-group mt-4">
+                        <label class="form-check-label" title="Добавляет в заказ случайные блюда.">
+                            {{ form.luck_me }} Мне повезет
+                        </label>
+                    </div>
+
+                    <div class="col text-center">
+                        <button type="submit" class="btn btn-primary mt-4 btn-block justify-content-center">Отправить заказ</button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
+
+
+    <style>
+        .card-checkbox input[type="checkbox"] {
+            display: none;
+        }
+        .card-selected {
+            border: 2px solid #007bff;
+        }
+    </style>
+    <script>
+        function toggleCardSelection(card) {
+            const checkbox = card.querySelector('input[type="checkbox"]');
+            
+            if (checkbox.checked) {
+                card.classList.remove("card-selected");
+                checkbox.checked = false;
+            } else {
+                card.classList.add("card-selected");
+                checkbox.checked = true;
+            }
+        }
+        </script>
 {% endblock %}

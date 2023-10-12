@@ -3,32 +3,28 @@
 
 {% block content %}
     <div class="container">
-        <h1 class="text-center">Отчет о продуктах</h1>
-        <hr>
-
+        <h1 class="text-center mt-4 mb-5">Отчет о продуктах</h1>
         <table class="table">
             <thead>
                 <tr>
                     <th>Наименование</th>
-                    <th>Цена</th>
-                    <th>Количество</th>
-                    <th>Итого</th>
+                    <th class="text-center">Цена</th>
+                    <th class="text-center">Количество</th>
+                    <th class="text-center">Итого</th>
                 </tr>
             </thead>
             <tbody>
                 {% for items in report %}
                     <tr>
                         <td>{{ items.name }}</td>
-                        <td>{{ items.price }}</td>
-                        <td>{{ items.count }}</td>
-                        <td>{{ items.count|mul:items.price }}</td>
+                        <td class="text-center">{{ items.price }}</td>
+                        <td class="text-center">{{ items.count }}</td>
+                        <td class="text-center">{{ items.count|mul:items.price }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
-
-        <br><br>
-        <div class="text-center">
+        <div class="text-center mt-5">
             <strong>Общая сумма: {{ total }}</strong>
         </div>
     </div>
