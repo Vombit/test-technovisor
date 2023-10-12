@@ -11,15 +11,6 @@ def index(request):
         'dates': dates,
         'staffers': staffers,
     }
-    dates = Order.objects.values_list('date', flat=True).distinct()
-    staffers = Staffer.objects.all()
-    
-    context = {
-        'dates': dates,
-        'staffers': staffers,
-    }
-    
-    return render(request, 'corporate_food/base.html', context)
     
     return render(request, 'corporate_food/base.html', context)
     
@@ -50,8 +41,6 @@ def history(request, user_id):
 def order(request):
     form = OrderForm()
     
-    form = OrderForm()
-    
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
@@ -64,13 +53,8 @@ def order(request):
             selected_dish_ids = form.cleaned_data['dishes']
             selected_dishes = Dish.objects.filter(pk__in=selected_dish_ids)
             
-            
-            selected_dish_ids = form.cleaned_data['dishes']
-            selected_dishes = Dish.objects.filter(pk__in=selected_dish_ids)
-            
             order = Order.objects.create(staffer=staffer, date=date)
 
-            for dish in selected_dishes:
             for dish in selected_dishes:
                 Order_Dish.objects.create(order=order, dish=dish)
                 
@@ -84,7 +68,7 @@ def order(request):
                 selected_dishes = list(selected_dishes)
                 selected_dishes.append(random_dish)
                 total_sum += random_dish.price
- 
+
             context = {
                 'dishes': selected_dishes,
                 'date': date,
@@ -93,8 +77,6 @@ def order(request):
             return render(request, 'corporate_food/order_details.html', context)
 
     else:
-        dishes = Dish.objects.all()
-        return render(request, 'corporate_food/order.html', {'form': form, 'dishes': dishes})
         dishes = Dish.objects.all()
         return render(request, 'corporate_food/order.html', {'form': form, 'dishes': dishes})
 
