@@ -1,5 +1,9 @@
 version: "3.9"
 services:
   corporate_food:
+    build: .
     container_name: corporate_food
-    
+    command: python manage.py runserver 0.0.0.0:80
+    ports:
+      - '80:80'
+    restart: on-failure
